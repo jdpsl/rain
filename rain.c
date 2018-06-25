@@ -1,10 +1,11 @@
 // rain.c
-
+#include <sys/ioctl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 
 char* wipe=" ";
 char* characters[16]={"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"};
@@ -132,8 +133,14 @@ int main(int argc, char** argv){
   int tick=0;
 
   if (argc != 3){
-    w=80;
-    h=23;
+
+    // default to screen width and height
+   unsigned short buff[4];
+   ioctl(0, TIOCGWINSZ, &buff);
+   w=buff[1];
+    h=buff[0];
+    
+
   }else{
     w=atoi(argv[1]);
     h=atoi(argv[2]);
